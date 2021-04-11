@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.li.design.mapper.WorkerMapper">
+  <resultMap id="BaseResultMap" type="com.li.design.entity.Worker">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+    <result column="REALNAME" jdbcType="VARCHAR" property="realname" />
+    <result column="SEX" jdbcType="VARCHAR" property="sex" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+    <result column="ADDR" jdbcType="VARCHAR" property="addr" />
+    <result column="DELETED" jdbcType="DECIMAL" property="deleted" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, USERNAME, PASSWORD, ROLE_ID, REALNAME, SEX, PHONE, PROVINCE,ADDR, DELETED, CREATE_TIME,
+    UPDATE_TIME
+  </sql>
+<select id="allWorker" resultMap="BaseResultMap">
+  select   <include refid="Base_Column_List" />
+  from WORKER
+    where deleted = 0
+</select>
+  <select id="findByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from WORKER
+    where username = #{username,jdbcType=VARCHAR}
+    and deleted = 0
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from WORKER
+    where ID = #{id,jdbcType=VARCHAR} and deleted = 0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    update  WORKER set
+    deleted = 1
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.li.design.entity.Worker">
+    insert into WORKER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        ID,
+      <if test="username != null">
+        USERNAME,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+      <if test="realname != null">
+        REALNAME,
+      </if>
+      <if test="sex != null">
+        SEX,
+      </if>
+      <if test="phone != null">
+        PHONE,
+      </if>
+      <if test="province != null">
+        PROVINCE,
+      </if>
+      <if test="addr != null">
+        ADDR,
+      </if>
+        DELETED,
+        CREATE_TIME,
+        UPDATE_TIME,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+        sys_guid(),
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=DECIMAL},
+      </if>
+      <if test="realname != null">
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=DECIMAL},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null">
+        #{addr,jdbcType=VARCHAR},
+      </if>
+
+      0,sysdate,sysdate,
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.li.design.entity.Worker">
+    update WORKER
+    <set>
+      <if test="username != null">
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        ROLE_ID = #{roleId,jdbcType=DECIMAL},
+      </if>
+      <if test="realname != null">
+        REALNAME = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        SEX = #{sex,jdbcType=DECIMAL},
+      </if>
+      <if test="phone != null">
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null">
+        ADDR = #{addr,jdbcType=VARCHAR},
+      </if>
+        <if test="province != null">
+        PROVINCE = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        DELETED = #{deleted,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+        UPDATE_TIME = sysdate,
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

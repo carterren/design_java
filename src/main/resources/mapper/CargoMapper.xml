@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.li.design.mapper.CargoMapper">
+  <resultMap id="BaseResultMap" type="com.li.design.entity.Cargo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="WEIGHT" jdbcType="VARCHAR" property="weight" />
+    <result column="TEMP" jdbcType="CHAR" property="temp" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="DELETED" jdbcType="DECIMAL" property="deleted" />
+    <result column="VERSION" jdbcType="DECIMAL" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, TYPE, NAME, WEIGHT, TEMP, CREATE_TIME, UPDATE_TIME, DELETED, VERSION
+  </sql>
+  <select id="allCargo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from CARGO
+    where DELETED=0
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from CARGO
+    where ID = #{id,jdbcType=VARCHAR} and  DELETED=0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    update  CARGO set DELETED=1
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertSelective" parameterType="com.li.design.entity.Cargo">
+    insert into CARGO
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        ID,
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="weight != null">
+        WEIGHT,
+      </if>
+      <if test="temp != null">
+        TEMP,
+      </if>
+        CREATE_TIME,
+        UPDATE_TIME,
+        DELETED,
+        VERSION,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+    sys_guid(),
+      <if test="type != null">
+        #{type,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="temp != null">
+        #{temp,jdbcType=CHAR},
+      </if>
+    sysdate,sysdate,0,1,
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.li.design.entity.Cargo">
+    update CARGO
+    <set>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        WEIGHT = #{weight,jdbcType=VARCHAR},
+      </if>
+      <if test="temp != null">
+        TEMP = #{temp,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+        UPDATE_TIME = sysdate,
+      <if test="deleted != null">
+        DELETED = #{deleted,jdbcType=DECIMAL},
+      </if>
+      <if test="version != null">
+        VERSION = #{version,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

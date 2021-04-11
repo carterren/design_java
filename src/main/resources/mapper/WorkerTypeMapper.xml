@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.li.design.mapper.WorkerTypeMapper">
+  <resultMap id="BaseResultMap" type="com.li.design.entity.WorkerType">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ROLE_NUM" jdbcType="VARCHAR" property="roleNum" />
+    <result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="DELETED" jdbcType="DECIMAL" property="deleted" />
+    <result column="VERSION" jdbcType="DECIMAL" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, ROLE_NUM, ROLE_NAME, CREATE_TIME, UPDATE_TIME, DELETED, VERSION
+  </sql>
+  <select id="allWorkerType"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from WORKER_TYPE
+    where deleted = 0
+    ORDER BY ROLE_NUM ASC
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Short" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from WORKER_TYPE
+    where ID = #{id,jdbcType=DECIMAL} and deleted = 0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    update  WORKER_TYPE set
+      deleted = 1
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertSelective" parameterType="com.li.design.entity.WorkerType">
+    insert into WORKER_TYPE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        ID,
+      <if test="roleNum != null">
+        ROLE_NUM,
+      </if>
+      <if test="roleName != null">
+        ROLE_NAME,
+      </if>
+        CREATE_TIME,
+        UPDATE_TIME,
+        DELETED,
+        VERSION,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+     sys_guid(),
+      <if test="roleNum != null">
+        #{roleNum,jdbcType=DECIMAL},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+         sysdate,sysdate,0,1,
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.li.design.entity.WorkerType">
+    update WORKER_TYPE
+    <set>
+      <if test="roleNum != null">
+        ROLE_NUM = #{roleNum,jdbcType=DECIMAL},
+      </if>
+      <if test="roleName != null">
+        ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      UPDATE_TIME = sysdate,
+      <if test="deleted != null">
+        DELETED = #{deleted,jdbcType=DECIMAL},
+      </if>
+      <if test="version != null">
+        VERSION = #{version,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+
+</mapper>

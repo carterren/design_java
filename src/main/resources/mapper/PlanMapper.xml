@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.li.design.mapper.PlanMapper">
+  <resultMap id="BaseResultMap" type="com.li.design.entity.Plan">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="S_PROVINCE" jdbcType="VARCHAR" property="sProvince" />
+    <result column="S_ADDR" jdbcType="VARCHAR" property="sAddr" />
+    <result column="E_PROVINCE" jdbcType="VARCHAR" property="eProvince" />
+    <result column="E_ADDR" jdbcType="VARCHAR" property="eAddr" />
+    <result column="SEND_DATE" jdbcType="VARCHAR" property="sendDate" />
+    <result column="VEHICLE" jdbcType="VARCHAR" property="vehicle" />
+    <result column="CARGO_NAME" jdbcType="VARCHAR" property="cargoName" />
+    <result column="CARGO_WEIGHT" jdbcType="VARCHAR" property="cargoWeight" />
+    <result column="PRICE" jdbcType="VARCHAR" property="price" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="DELETED" jdbcType="DECIMAL" property="deleted" />
+    <result column="VERSION" jdbcType="DECIMAL" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID,S_PROVINCE, S_ADDR,E_PROVINCE, E_ADDR, SEND_DATE, VEHICLE, CARGO_NAME, CARGO_WEIGHT, PRICE, CREATE_TIME,
+    UPDATE_TIME, DELETED, VERSION
+  </sql>
+  <select id="allPlan" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from PLAN where deleted =0
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from PLAN
+    where ID = #{id,jdbcType=VARCHAR} and deleted =0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+
+    update PLAN set
+      deleted = 1
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.li.design.entity.Plan">
+    insert into PLAN
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        ID,
+      <if test="sProvince != null">
+        S_PROVINCE,
+      </if>
+      <if test="sAddr != null">
+        S_ADDR,
+      </if>
+      <if test="eProvince != null">
+        E_PROVINCE,
+      </if>
+      <if test="eAddr != null">
+        E_ADDR,
+      </if>
+      <if test="sendDate != null">
+        SEND_DATE,
+      </if>
+      <if test="vehicle != null">
+        VEHICLE,
+      </if>
+      <if test="cargoName != null">
+        CARGO_NAME,
+      </if>
+      <if test="cargoWeight != null">
+        CARGO_WEIGHT,
+      </if>
+      <if test="price != null">
+        PRICE,
+      </if>
+        CREATE_TIME,
+        UPDATE_TIME,
+        DELETED,
+        VERSION,
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+     sys_guid(),
+      <if test="sProvince != null">
+        #{sProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="sAddr != null">
+        #{sAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="eProvince != null">
+        #{eProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="eAddr != null">
+        #{eAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="sendDate != null">
+        #{sendDate,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicle != null">
+        #{vehicle,jdbcType=VARCHAR},
+      </if>
+      <if test="cargoName != null">
+        #{cargoName,jdbcType=VARCHAR},
+      </if>
+      <if test="cargoWeight != null">
+        #{cargoWeight,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=VARCHAR},
+      </if>
+        sysdate,sysdate,0,1,
+
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.li.design.entity.Plan">
+    update PLAN
+    <set>
+      <if test="sProvince != null">
+        S_PROVINCE = #{sProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="sAddr != null">
+        S_ADDR = #{sAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="eProvince != null">
+        E_PROVINCE = #{eProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="eAddr != null">
+        E_ADDR = #{eAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="sendDate != null">
+        SEND_DATE = #{sendDate,jdbcType=VARCHAR},
+      </if>
+      <if test="vehicle != null">
+        VEHICLE = #{vehicle,jdbcType=VARCHAR},
+      </if>
+      <if test="cargoName != null">
+        CARGO_NAME = #{cargoName,jdbcType=VARCHAR},
+      </if>
+      <if test="cargoWeight != null">
+        CARGO_WEIGHT = #{cargoWeight,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        PRICE = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      </if>
+        UPDATE_TIME = sysdate,
+      <if test="deleted != null">
+        DELETED = #{deleted,jdbcType=DECIMAL},
+      </if>
+      <if test="version != null">
+        VERSION = #{version,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+</mapper>
